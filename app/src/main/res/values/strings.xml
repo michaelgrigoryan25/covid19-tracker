@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">COVID-19 Tracker</string>
+    <string name="fab_desc">Refresh Data</string>
+</resources>
