@@ -9,7 +9,7 @@ git clone https://github.com/MichaelGrigoryan25/Covid19-Tracker.git
 ```
 - Open the project folder in Android Studio
 - Create a RapidAPI account at https://rapidapi.com/signup then go to https://rapidapi.com/api-sports/api/covid-193 and get your credentials
-- After getting your credentials find the find the `COVID.kt` file at `app/src/main/java/com/example/usingapis/` and put it your credentials in the Headers as described in the example below
+- After getting your credentials find the find the `COVID.kt` file at `app/src/main/java/com/michaelgrigoryan/covidtracker` and put it your credentials in the Headers as described in the example below
 ```kotlin
 @Headers(
         "x-rapidapi-key: YOUR_KEY",

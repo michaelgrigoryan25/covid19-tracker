@@ -1,4 +1,4 @@
-package com.example.usingapis
+package com.michaelgrigoryan.covidtracker
 
 import android.graphics.Color
 import android.view.LayoutInflater

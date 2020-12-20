@@ -1,4 +1,4 @@
-package com.example.usingapis.api
+package com.michaelgrigoryan.covidtracker.api
 
 data class Deaths(
     val `1M_pop`: String,

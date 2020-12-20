@@ -8,7 +8,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.example.usingapis"
+        applicationId "com.michaelgrigoryan.covidtracker"
         minSdkVersion 18
         targetSdkVersion 30
         versionCode 1

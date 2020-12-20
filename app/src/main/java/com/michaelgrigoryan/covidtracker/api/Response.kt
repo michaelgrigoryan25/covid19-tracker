@@ -1,4 +1,4 @@
-package com.example.usingapis.api
+package com.michaelgrigoryan.covidtracker.api
 
 data class Response(
         val cases: Cases,

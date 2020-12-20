@@ -1,8 +1,8 @@
-package com.example.usingapis
+package com.michaelgrigoryan.covidtracker
 
-import com.example.usingapis.api.Country
-import com.example.usingapis.api.Response
-import com.example.usingapis.api.Stats
+import com.michaelgrigoryan.covidtracker.api.Country
+import com.michaelgrigoryan.covidtracker.api.Response
+import com.michaelgrigoryan.covidtracker.api.Stats
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Headers
