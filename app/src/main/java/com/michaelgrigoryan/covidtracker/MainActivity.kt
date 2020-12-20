@@ -72,7 +72,6 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         countries.remove("All")
-                        countries.sort()
 
                         rv.visibility = View.VISIBLE
                         spinner.visibility = View.GONE
