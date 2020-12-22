@@ -9,15 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerAdapter(
         private var countries: List<String>,
-//        private var newCases: List<String>,
-        private  var activeCases: List<String>)
-    :
+        private  var activeCases: List<String>) :
         RecyclerView.Adapter<RecyclerAdapter.ViewHolder> () {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val country: TextView = itemView.findViewById(R.id.tv_title)
         val activeCases: TextView = itemView.findViewById(R.id.active_cases)
-//        val newCases: TextView = itemView.findViewById(R.id.newCases)
     }
 
     override fun getItemCount(): Int {
@@ -36,6 +33,6 @@ class RecyclerAdapter(
             holder.activeCases.setTextColor(Color.parseColor("#3BC14A"))
         }
         holder.country.text = countries[position]
-        holder.activeCases.text = "Active Cases: " + activeCases[position]
+        holder.activeCases.text = activeCases[position]
     }
 }

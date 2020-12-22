@@ -1,89 +1,39 @@
 package com.michaelgrigoryan.covidtracker
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.awaitResponse
-import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Exception
+import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.michaelgrigoryan.covidtracker.ui.MainFragment
+import com.michaelgrigoryan.covidtracker.ui.SearchFragment
 
-
-class MainActivity : AppCompatActivity() {
-
-    private var countries = mutableListOf<String>()
-    private var activeCases = mutableListOf<String>()
-    private var newCases = mutableListOf<String>()
-
+class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val button = findViewById<FloatingActionButton>(R.id.refresh_data)
 
-        val rv = findViewById<RecyclerView>(R.id.data_list)
-        rv.layoutManager = LinearLayoutManager(this)
-        rv.adapter = RecyclerAdapter(countries, activeCases /*,newCases*/)
+        val home = MainFragment()
+        val search = SearchFragment()
+        val navigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        button.setOnClickListener {
-            stats()
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container, home)
+            commit()
         }
 
-        stats()
+        navigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigate_home -> makeFragment(home)
+                R.id.navigate_search -> makeFragment(search)
+            }
+            true
+        }
     }
 
-    private fun stats() {
-        val spinner = findViewById<ProgressBar>(R.id.progressBar)
-        val rv = findViewById<RecyclerView>(R.id.data_list)
-        rv.visibility = View.GONE
-        spinner.visibility = View.VISIBLE
-        val api = Retrofit.Builder()
-            .baseUrl("https://covid-193.p.rapidapi.com")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(COVID::class.java)
-
-        GlobalScope.launch(Dispatchers.IO) {
-            try {
-                val response = api.getStats().awaitResponse()
-
-                if (response.isSuccessful) {
-                    val data = response.body()!!
-                    withContext(Dispatchers.Main) {
-
-                        countries.removeAll(countries)
-                        activeCases.removeAll(activeCases)
-                        newCases.removeAll(activeCases)
-
-
-                        data.response.forEach {
-                            countries.add(it.country)
-                            activeCases.add(it.cases.active.toString())
-//                            newCases.add(it.cases.new.toString())
-                        }
-
-                        countries.remove("All")
-
-                        rv.visibility = View.VISIBLE
-                        spinner.visibility = View.GONE
-                    }
-                }
-
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(applicationContext, "Whoops, something bad happened", Toast.LENGTH_SHORT).show()
-                    Log.e("ERROR", e.toString())
-                }
-            }
+    private fun makeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container, fragment)
+            commit()
         }
     }
 }
