@@ -1,4 +1,4 @@
-package com.michaelgrigoryan.covidtracker.api
+package com.michaelgrigoryan.covidtracker.model
 
 data class Stats(
     val errors: List<Any>,

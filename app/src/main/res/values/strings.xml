@@ -1,6 +1,17 @@
 <resources>
     <string name="app_name">COVID-19 Tracker</string>
     <string name="fab_desc">Refresh Data</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="select_date">Select Date</string>
+    <string name="report_indicator">Report Type</string>
+    <string name="global_report">Global Report</string>
+    <string name="last_updated">Last updated </string>
+    <string name="recovered">Recovered</string>
+    <string name="deaths">Deaths</string>
+    <string name="active">Active (Critical)</string>
+    <string name="cases">Cases</string>
+    <string name="select_country">Select Country</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="countries">Countries</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.michaelgrigoryan.covidtracker.ui
+package com.michaelgrigoryan.covidtracker.ui.fragment
 
 import android.os.Bundle
 import android.text.Editable
@@ -12,9 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
-import com.michaelgrigoryan.covidtracker.COVID
 import com.michaelgrigoryan.covidtracker.R
-import com.michaelgrigoryan.covidtracker.RecyclerAdapter
+import com.michaelgrigoryan.covidtracker.api.APIService
+import com.michaelgrigoryan.covidtracker.ui.adapter.RecyclerAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.awaitResponse
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.Exception
+import timber.log.Timber
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
     private var countries = mutableListOf<String>()
@@ -35,6 +35,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         rv.adapter = RecyclerAdapter(countries, activeCases)
         val searchField = view.findViewById<TextInputEditText>(R.id.search_field)
         searchField.addTextChangedListener(textWatcher)
+
     }
     private val textWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {}
@@ -55,7 +56,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             .baseUrl("https://covid-193.p.rapidapi.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(COVID::class.java)
+            .create(APIService::class.java)
 
         GlobalScope.launch(Dispatchers.IO) {
             try {
@@ -69,7 +70,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                         activeCases.clear()
 
                         data.response.forEach {
-                            if (it.country.equals(s.toString()) || it.country.contains(s.toString())) {
+                            if (it.country == s.toString() || it.country.contains(s.toString())) {
+                                Timber.d(it.country)
                                 countries.add(it.country)
                                 activeCases.add(it.cases.active.toString())
                             }
