@@ -1,0 +1,161 @@
+package com.michaelgrigoryan.covidtracker.ui.fragment
+
+import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointBackward
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.michaelgrigoryan.covidtracker.R
+import com.michaelgrigoryan.covidtracker.api.RetrofitClient
+import com.michaelgrigoryan.covidtracker.ui.adapter.ReportsAdapter
+import com.michaelgrigoryan.covidtracker.util.formatDate
+import com.michaelgrigoryan.covidtracker.util.formatNumber
+import com.michaelgrigoryan.covidtracker.util.getCurrentDate
+import com.michaelgrigoryan.covidtracker.util.getLastUpdate
+import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.awaitResponse
+import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
+
+class MainFragment : Fragment(R.layout.fragment_main) {
+    private var currentDate: String? = null
+    private lateinit var reportsAdapter: ReportsAdapter
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        currentDate = getCurrentDate()
+
+        reportsAdapter = ReportsAdapter()
+        statistics.apply {
+            statistics.adapter = reportsAdapter
+            layoutManager = LinearLayoutManager(activity)
+        }
+
+        datePicker.setOnClickListener {
+            val builder = MaterialDatePicker.Builder.datePicker()
+            builder.setTitleText(getString(R.string.select_date))
+
+            val constraintsBuilder = CalendarConstraints.Builder()
+            val calendar = Calendar.getInstance()
+            val dateValidator = DateValidatorPointBackward.before(calendar.timeInMillis)
+            constraintsBuilder.setValidator(dateValidator)
+            builder.setCalendarConstraints(
+                constraintsBuilder
+                    .build()
+            )
+
+            val picker = builder.build()
+            picker.show(childFragmentManager, picker.toString())
+
+            picker.addOnPositiveButtonClickListener {
+                val timeZone = TimeZone.getDefault()
+                val timeZoneOffset = timeZone.getOffset(Date().time * -1)
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val dateFormat = Date(it + timeZoneOffset)
+
+                date.text = sdf.format(dateFormat)
+
+                currentDate = sdf.format(dateFormat)
+
+                history(sdf.format(dateFormat))
+
+            }
+        }
+
+        refreshData.setOnClickListener {
+            history(currentDate!!)
+        }
+
+        history(currentDate!!)
+
+        statistics()
+
+    }
+
+    private fun history(currentDate: String) {
+
+        //val spinner = view?.findViewById<ProgressBar>(R.id.progressBar)!!
+        //val rv = view?.findViewById<RecyclerView>(R.id.data_list)!!
+        //rv.visibility = View.GONE
+        //spinner.visibility = View.VISIBLE
+
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response =
+                    RetrofitClient.getRetrofit().getAPIService().getHistory("all", currentDate)
+                        .awaitResponse()
+
+                if (response.isSuccessful) {
+                    val data = response.body()!!
+                    withContext(Dispatchers.Main) {
+
+                        lastUpdate.text = getString(R.string.last_updated).plus(" ")
+                            .plus(getLastUpdate(data.response[0].time))
+
+                        val responseData = data.response[0]
+
+                        date.text = formatDate(responseData.time)
+
+                        /*Recoveries*/
+                        totalRecoveries.text = formatNumber(responseData.cases.recovered)
+
+                        /*Deaths*/
+                        totalDeaths.text = formatNumber(responseData.deaths.total)
+                        newDeaths.text = " (+".plus(formatNumber(responseData.deaths.new.toInt())).plus(")")
+
+                        /*Active*/
+                        totalActive.text = formatNumber(responseData.cases.active)
+                        critical.text = " (".plus(formatNumber(responseData.cases.critical)).plus(")")
+
+                        /*Cases*/
+                        totalCases.text = formatNumber(responseData.cases.total)
+                        newCases.text = " (+".plus(formatNumber(responseData.cases.new.toInt())).plus(")")
+
+                        /*countries.clear()
+                        activeCases.clear()
+
+                        data.response.forEach {
+                            countries.add(it.country)
+                            activeCases.add(it.cases.active.toString())
+                        }
+                        countries.remove("All")*/
+                        //rv.visibility = View.VISIBLE
+                        //spinner.visibility = View.GONE
+                    }
+                }
+
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        view?.context,
+                        "It was a safe world then",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    Timber.d(e)
+                }
+            }
+        }
+    }
+
+    private fun statistics() {
+        GlobalScope.launch(Dispatchers.IO) {
+            val response = RetrofitClient.getRetrofit().getAPIService().getStats().awaitResponse()
+
+            if (response.isSuccessful) {
+                val data = response.body()
+                withContext(Dispatchers.Main) {
+                    reportsAdapter.setData(data!!.response)
+                }
+            }
+        }
+    }
+}

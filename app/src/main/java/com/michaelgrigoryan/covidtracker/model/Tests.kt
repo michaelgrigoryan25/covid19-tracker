@@ -1,4 +1,4 @@
-package com.michaelgrigoryan.covidtracker.api
+package com.michaelgrigoryan.covidtracker.model
 
 data class Tests(
     val `1M_pop`: String,

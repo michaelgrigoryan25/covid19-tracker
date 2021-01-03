@@ -1,12 +1,12 @@
-package com.michaelgrigoryan.covidtracker
+package com.michaelgrigoryan.covidtracker.ui.activity
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.michaelgrigoryan.covidtracker.ui.MainFragment
-import com.michaelgrigoryan.covidtracker.ui.SearchFragment
+import com.michaelgrigoryan.covidtracker.R
+import com.michaelgrigoryan.covidtracker.ui.fragment.MainFragment
+import com.michaelgrigoryan.covidtracker.ui.fragment.SearchFragment
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
