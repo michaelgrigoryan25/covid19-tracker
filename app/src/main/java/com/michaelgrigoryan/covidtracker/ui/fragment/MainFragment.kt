@@ -32,14 +32,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*Get Current Date*/
         currentDate = getCurrentDate()
 
+        /*Initialise reports adapter*/
         reportsAdapter = ReportsAdapter()
         statistics.apply {
             statistics.adapter = reportsAdapter
             layoutManager = LinearLayoutManager(activity)
         }
 
+        /*Handle date picker*/
         datePicker.setOnClickListener {
             val builder = MaterialDatePicker.Builder.datePicker()
             builder.setTitleText(getString(R.string.select_date))
@@ -71,14 +74,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
         }
 
+        /*Click to refresh history and statistics*/
         refreshData.setOnClickListener {
             history(currentDate!!)
+            statistics()
         }
 
+        /*Fetch history*/
         history(currentDate!!)
 
+        /*Fetch Statistics*/
         statistics()
-
     }
 
     private fun history(currentDate: String) {
@@ -98,11 +104,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     val data = response.body()!!
                     withContext(Dispatchers.Main) {
 
+                        /*Fetch latest response item*/
+                        val responseData = data.response[0]
+
+                        /*Show last update information*/
                         lastUpdate.text = getString(R.string.last_updated).plus(" ")
                             .plus(getLastUpdate(data.response[0].time))
 
-                        val responseData = data.response[0]
-
+                        /*Show current history date*/
                         date.text = formatDate(responseData.time)
 
                         /*Recoveries*/
@@ -153,6 +162,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             if (response.isSuccessful) {
                 val data = response.body()
                 withContext(Dispatchers.Main) {
+                    /*Pass response data to recycler adapter */
                     reportsAdapter.setData(data!!.response)
                 }
             }
