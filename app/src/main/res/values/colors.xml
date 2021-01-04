@@ -24,4 +24,6 @@
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#212121</color>
     <color name="colorOnBackground">#212121</color>
+    <color name="textColorPrimary">#212121</color>
+    <color name="textColorSecondary">#757575</color>
 </resources>
