@@ -2,7 +2,7 @@
   Covid-19 Tracker
 </h1>
 
-<img alt="movies_screen" src="https://github.com/MichaelGrigoryan25/Covid19-Tracker/blob/master/screenshots/home.png" width="235" height="500"> <img alt="movie_detail_screen" src="https://github.com/MichaelGrigoryan25/Covid19-Tracker/blob/master/screenshots/date_picker.png" width="235" height="500">
+<img alt="movies_screen" src="https://github.com/MichaelGrigoryan25/Covid19-Tracker/blob/master/screenshots/home.png" width="235" height="500"> <img alt="movie_detail_screen" src="https://github.com/MichaelGrigoryan25/Covid19-Tracker/blob/master/screenshots/dark_home.png" width="235" height="500"> <img alt="movie_detail_screen" src="https://github.com/MichaelGrigoryan25/Covid19-Tracker/blob/master/screenshots/date_picker.png" width="235" height="500">
 
 ## Getting Started
 - Clone the repository
