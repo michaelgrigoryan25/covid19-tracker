@@ -28,7 +28,7 @@ class RetrofitClient {
     private fun headerInterceptor(): Interceptor {
         return Interceptor { chain ->
             val request = chain.request().newBuilder()
-                    .header("x-rapidapi-key", "9058ab254bmsh06db2fa7427a4e6p1013e4jsn2217831e6a2e")
+                    .header("x-rapidapi-key", BuildConfig.RAPID_API_KEY)
                     .header("x-rapidapi-host", "covid-193.p.rapidapi.com")
                     .header("useQueryString", "true")
                     .build()
