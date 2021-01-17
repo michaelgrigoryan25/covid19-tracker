@@ -12,7 +12,6 @@ import java.util.*
 
 
 class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ReportsViewHolder>() {
-
     private var dataList: List<Response> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReportsViewHolder {
@@ -32,17 +31,11 @@ class ReportsAdapter : RecyclerView.Adapter<ReportsAdapter.ReportsViewHolder>() 
     }
 
     class ReportsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         fun bind(data: Response) = with(itemView) {
-
             countryName.text = data.country.plus(" - ").plus(data.continent)
             total.text = formatNumber(data.cases.total)
             recovered.text = formatNumber(data.cases.recovered)
             deaths.text = formatNumber(data.deaths.total)
-
-            setOnClickListener {
-                // Implement Click
-            }
         }
     }
 }

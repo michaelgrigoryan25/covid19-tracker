@@ -88,12 +88,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun history(currentDate: String) {
-
-        //val spinner = view?.findViewById<ProgressBar>(R.id.progressBar)!!
-        //val rv = view?.findViewById<RecyclerView>(R.id.data_list)!!
-        //rv.visibility = View.GONE
-        //spinner.visibility = View.VISIBLE
-
         GlobalScope.launch(Dispatchers.IO) {
             try {
                 val response =
@@ -128,17 +122,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                         /*Cases*/
                         totalCases.text = formatNumber(responseData.cases.total)
                         newCases.text = " (+".plus(formatNumber(responseData.cases.new.toInt())).plus(")")
-
-                        /*countries.clear()
-                        activeCases.clear()
-
-                        data.response.forEach {
-                            countries.add(it.country)
-                            activeCases.add(it.cases.active.toString())
-                        }
-                        countries.remove("All")*/
-                        //rv.visibility = View.VISIBLE
-                        //spinner.visibility = View.GONE
                     }
                 }
 
@@ -146,7 +129,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         view?.context,
-                        "It was a safe world then",
+                        "It looks like you're not connected to the internet",
                         Toast.LENGTH_SHORT
                     ).show()
                     Timber.d(e)
