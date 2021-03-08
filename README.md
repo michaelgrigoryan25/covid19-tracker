@@ -1,6 +1,6 @@
 # covid-19 tracker
 
-<div style="background-color: #11121B" align="center">
+<p style="background-color: #11121B" align="center">
   <img height="300" src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/7f115d94606771.5e832a7fd62bf.gif" />
 </p>
 
