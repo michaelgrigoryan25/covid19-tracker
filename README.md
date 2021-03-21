@@ -1,10 +1,25 @@
-<p style="background-color: #11121B" align="center">
-  <img height="300" src="https://mir-s3-cdn-cf.behance.net/project_modules/disp/7f115d94606771.5e832a7fd62bf.gif" />
-</p>
+# covid19-tracker
 
-<h1 align="center">covid-19 tracker</h1>
+An open-source Covid-19 tracking app written in Kotlin for Android
+
+## MAD Score
+
+[Link to the score](https://madscorecard.withgoogle.com/scorecard/share/3908347829/)
+
+![MAD Score](./screenshots/mad-score.png)
+
+## Technologies used
+
+- SDP - Scalable DP
+- Timber - For logging
+- Material Design - UI
+  - Material Spinner
+- Loading indicators - UI
+- Retrofit2 - HTTP Requests
+- Kotlin Coroutines - Async tasks
 
 ## Getting Started
+
 - Clone the repository
 
 ```shell
