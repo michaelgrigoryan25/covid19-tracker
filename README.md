@@ -4,7 +4,7 @@ An open-source Covid-19 tracking app written in Kotlin for Android
 
 ## MAD Score
 
-[Link to the score](https://madscorecard.withgoogle.com/scorecard/share/3908347829/)
+[Link to MAD Scoreboard](https://madscorecard.withgoogle.com/scorecard/share/3908347829/)
 
 ![MAD Score](./screenshots/mad-score.png)
 
