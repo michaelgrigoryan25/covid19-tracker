@@ -305,7 +305,7 @@
                 android:src="@drawable/indicator"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/grey" />
+                app:tint="@color/minion_yellow" />
 
             <TextView
                 android:id="@+id/totalTitle"

@@ -10,6 +10,7 @@ import com.google.android.material.datepicker.DateValidatorPointBackward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.michaelgrigoryan.covidtracker.R
 import com.michaelgrigoryan.covidtracker.api.RetrofitClient
+import com.michaelgrigoryan.covidtracker.model.Response as CountryResponse
 import com.michaelgrigoryan.covidtracker.ui.adapter.ReportsAdapter
 import com.michaelgrigoryan.covidtracker.util.formatDate
 import com.michaelgrigoryan.covidtracker.util.formatNumber
@@ -99,11 +100,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     withContext(Dispatchers.Main) {
 
                         /*Fetch latest response item*/
-                        val responseData = data.response[0]
+                        val responseData = data.response.first()
 
                         /*Show last update information*/
                         lastUpdate.text = getString(R.string.last_updated).plus(" ")
-                            .plus(getLastUpdate(data.response[0].time))
+                            .plus(getLastUpdate(data.response.first().time))
 
                         /*Show current history date*/
                         date.text = formatDate(responseData.time)
@@ -140,13 +141,24 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     private fun statistics() {
         GlobalScope.launch(Dispatchers.IO) {
-            val response = RetrofitClient.getRetrofit().getAPIService().getStats().awaitResponse()
+            val response = RetrofitClient.getRetrofit()
+                .getAPIService()
+                .getStats()
+                .awaitResponse()
 
             if (response.isSuccessful) {
-                val data = response.body()
+                val data = response.body()!!
                 withContext(Dispatchers.Main) {
-                    /*Pass response data to recycler adapter */
-                    reportsAdapter.setData(data!!.response)
+                    val updatedData = mutableListOf<CountryResponse>()
+                    // Finding the `All` element in the country list and removing it
+                    data.response.map { country ->
+                        if (country.country != "All") updatedData.add(country)
+                    }
+
+                    updatedData.sortBy { it.country }
+
+                    // Pass response data to recycler adapter
+                    reportsAdapter.setData(updatedData)
                 }
             }
         }
